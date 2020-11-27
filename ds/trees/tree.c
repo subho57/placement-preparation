@@ -15,42 +15,35 @@ typedef struct TREEnode
    struct TREEnode* left;
 }node;
 
-typedef struct QUEUE
+typedef struct
 {
     int front;
     int rear;
     node *Q[MAXSIZE];
 }queue;
 
-int isEmpty(queue *q)
-{
+int isEmpty(queue *q) {
    return (q -> front == -1);
 }
 
-void enqueue(queue *q, node *x)
-{
+void enqueue(queue *q, node *x) {
     if ((q -> front == q -> rear + 1) || (q -> front == 0 && q -> rear == MAXSIZE - 1))
-    {
         printf("Queue Overflows");
-    }
-    else
-    {    
+    else {
         if (q -> front == -1)
             q -> front = 0;
         q -> rear = (q -> rear + 1) % MAXSIZE;
         q -> Q[q -> rear] = x;
     }
 }
-node* dequeue(queue *q)
-{   
+
+node* dequeue(queue *q) {
     node* x = NULL;
-    if (isEmpty(q))
-    {
+    if (isEmpty(q)) {
         printf("Queue underflows");
         return NULL;
     }
-    else
-    {
+    else {
         x = q -> Q[q -> front]; 
         if(q -> front == q -> rear)
             q -> rear = q -> front = -1;
@@ -61,8 +54,8 @@ node* dequeue(queue *q)
 }
 
 node *root=NULL;
-void create_tree()
-{
+
+void create_tree() {
     queue q;
     q.front = -1;
     q.rear = -1;
@@ -74,33 +67,30 @@ void create_tree()
     rootnode -> left = rootnode -> right = NULL;
     root = rootnode;
     enqueue(&q, root);
-    while(!isEmpty(&q))
-    {
-       node *p = dequeue(&q);
-       printf("Enter the left child of %d or press -1 to exit: ", p -> data);
-       scanf("%d", &x);
-       if(x != -1)
-       {
-           node *t=(node*)malloc(sizeof(node));
-           t -> data = x;
-           t -> left = t -> right = NULL;
-           p -> left = t;
-           enqueue(&q, t);
-       }
+    while(!isEmpty(&q)) {
+        node *p = dequeue(&q);
+        printf("Enter the left child of %d or press -1 to exit: ", p -> data);
+        scanf("%d", &x);
+        if(x != -1) {
+            node *t=(node*)malloc(sizeof(node));
+            t -> data = x;
+            t -> left = t -> right = NULL;
+            p -> left = t;
+            enqueue(&q, t);
+        }
         printf("Enter the right child of %d or press -1 to exit: ", p -> data);
         scanf("%d", &x);
-        if(x != -1)
-        {
-           node *t = (node*)malloc(sizeof(node));
-           t -> data = x;
-           t -> right = t -> right = NULL;
-           p -> right = t;
-           enqueue(&q, t);
+        if(x != -1) {
+            node *t = (node*)malloc(sizeof(node));
+            t -> data = x;
+            t -> right = t -> right = NULL;
+            p -> right = t;
+            enqueue(&q, t);
        }
    }
 }
-// O(n)
 
+// O(n)
 void inorder(node *root) {
     if (root == NULL)
         return;
@@ -128,10 +118,8 @@ int main(void) {
     if(is_bst_efficient(root, INT_MIN, INT_MAX))
         printf("It is a BST!\n");
     else
-    {
         printf("It is not a BST\n");
-    }
-    printf("Printing the  In-Order   Traversal: ");
+    printf("Printing the In-Order Traversal: ");
     inorder(root);
     printf("\n");
     return 0;
