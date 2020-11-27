@@ -12,11 +12,11 @@
 
 typedef int type;
 
-typedef struct BSTnode{
+typedef struct TREEnode{
     type data;
-    struct BSTnode *left;
-    struct BSTnode *right;
-    struct BSTnode *parent;
+    struct TREEnode *left;
+    struct TREEnode *right;
+    struct TREEnode *parent;
 }node;
 
 // to binary search data in the tree

@@ -3,7 +3,7 @@
 #include <string.h>
 
 typedef char * string;
-typedef struct BSTnode * data_type; // only change this line according to your program
+typedef struct TREEnode * data_type; // only change this line according to your program
 
 typedef struct __node {
     data_type data;
