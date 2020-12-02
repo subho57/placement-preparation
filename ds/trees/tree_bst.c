@@ -20,15 +20,13 @@ typedef struct TREEnode{
 }node;
 
 // to binary search data in the tree
-type search(node *tree, type number) {
-    if (tree == NULL)
-        return 0;
-    else if (number < tree->data)
+node *search(node *tree, type number) {
+    if (tree == NULL || number == tree -> data)
+        return tree;
+    if (number < tree->data)
         return search(tree->left, number);
-    else if (number > tree->data)
-        return search(tree->right, number);
     else
-        return 1;
+        return search(tree->right, number);
 }
 
 // create a new node in memory and insert a value at its data ~ O(1)
@@ -51,6 +49,18 @@ void insert(node **root, type val) {
         insert(&(*root)->left, val);
     else
         insert(&(*root)->right, val);
+}
+
+node *insert_rec(node *root, type val) {
+    if (root == NULL) {
+        root = createnode(val);
+        return root;
+    }
+    else if (val <= root -> data)
+        root -> left = insert_rec(root -> left, val);
+    else
+        root -> right = insert_rec(root -> right, val);
+    return root;
 }
 
 // to find the maximum element iteratively
@@ -76,16 +86,16 @@ type find_min_itr(node *root) {
 }
 
 // to find the maximum element recursively
-type find_max_rec(node *root) {
+node *find_max_rec(node *root) {
     if (root->right == NULL)
-        return root->data;
+        return root;
     return find_max_rec(root->right);
 }
 
 // to find the minimum element recursively
-type find_min_rec(node *root) {
+node *find_min_rec(node *root) {
     if (root->left == NULL)
-        return root->data;
+        return root;
     return find_min_rec(root->left);
 }
 
@@ -215,7 +225,7 @@ void delete(node **root, type data) {
         }
         // case 3 : there's both left and right child
         else {
-            type min = find_min_rec((*root) -> right);
+            type min = find_min_itr((*root) -> right);
             (*root) -> data = min;
             delete(&(*root)-> right, min);
         }
@@ -224,22 +234,71 @@ void delete(node **root, type data) {
 }
 
 
-type inorder_successor(node *root, int data) {
-
+node *inorder_successor(node *root, int data) {
+    // Step 1 : search the given node ~ O(h)
+    node *current = search(root, data);
+    if (current == NULL)
+        return current;
+    // Step 2: Case 1 :: if the given node has a right subtree ~ O(h)
+    if (current -> right != NULL)
+        return find_min_rec(current -> right);
+    // Step 2: Case 2 :: if the given node no right subtree ~ O(h)
+    else {
+        node *successor = NULL;
+        node *ancestor = root;
+        while (ancestor != current) {
+            if (current -> data < ancestor -> data) {
+                successor = ancestor;
+                ancestor = ancestor -> left;
+            }
+            else
+                ancestor = ancestor -> right;
+        }
+        return successor;
+    }
 }
+
+node *inorder_predecessor(node *root, int data) {
+    // Step 1 : search the given node ~ O(h)
+    node *current = search(root, data);
+    if (current == NULL)
+        return current;
+    // Step 2: Case 1 :: if the given node has a left subtree ~ O(h)
+    if (current -> left != NULL)
+        return find_max_rec(current -> left);
+    // Step 2: Case 2 :: if the given node no left subtree ~ O(h)
+    else {
+        node *predecessor = NULL;
+        node *ancestor = root;
+        while (ancestor != current) {
+            if (current -> data > ancestor -> data) {
+                predecessor = ancestor;
+                ancestor = ancestor -> right;
+            }
+            else
+                ancestor = ancestor -> left;
+        }
+        return predecessor;
+    }
+}
+
 int main(void) {
     node *root = NULL;
-    insert(&root, 15);
-    insert(&root, 10);
-    insert(&root, 20);
-    insert(&root, 25);
-    insert(&root, 8);
-    insert(&root, 12);
-    if (search(root, 15)) printf("Found!\n");
+    root = insert_rec(root, 15);
+    root = insert_rec(root, 10);
+    root = insert_rec(root, 20);
+    root = insert_rec(root, 25);
+    root = insert_rec(root, 8);
+    root = insert_rec(root, 12);
+
+    node * temp = search(root, 20);
+    if (temp != NULL) printf("Found!\n");
     else printf("Not Found!\n");
-    printf("Max Element = %d\n", find_max_rec(root));
-    printf("Min Element = %d\n", find_min_rec(root));
+
+    printf("Max Element = %d\n", find_max_itr(root));
+    printf("Min Element = %d\n", find_min_itr(root));
     printf("Height of the tree = %d\n", find_height(root));
+
     printf("Printing the level Order Traversal: ");
     print_level_order(root);
 
@@ -258,20 +317,33 @@ int main(void) {
     if(is_bst_efficient(root, INT_MIN, INT_MAX))
         printf("It is a BST!\n");
     else
-    {
         printf("It is not a BST\n");
-    }
+
     delete(&root, 12);
     printf("Printing the level Order Traversal: ");
     print_level_order(root);
     printf("Printing the  In-Order   Traversal: ");
     inorder(root);
     printf("\n");
+
     delete(&root, 15);
     printf("Printing the level Order Traversal: ");
     print_level_order(root);
     printf("Printing the  In-Order   Traversal: ");
     inorder(root);
     printf("\n");
+
+    node *successor = inorder_successor(root, 20);
+    if(successor != NULL)
+        printf("Inorder successor of 20 is %d\n", successor -> data);
+    else
+        printf("The given node doesn't have an inorder successor.\n");
+
+    node *predecessor = inorder_predecessor(root, 20);
+    if(predecessor != NULL)
+        printf("Inorder predecessor of 20 is %d\n", predecessor -> data);
+    else
+        printf("The given node doesn't have an inorder predecessor.\n");
+        
     return 0;
 }
