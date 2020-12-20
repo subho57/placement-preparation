@@ -358,8 +358,8 @@ int main(void)
     printf("Min Element = %d\n", find_min_itr(root));
     printf("Height of the tree = %d\n", find_height(root));
 
-    // printf("Printing the level Order Traversal: ");
-    // print_level_order(root);
+    printf("Printing the level Order Traversal: ");
+    print_level_order(root);
 
     printf("Printing the  Pre-Order  Traversal: ");
     preorder(root);
@@ -379,15 +379,15 @@ int main(void)
         printf("It is not a BST\n");
 
     delete (&root, 12);
-    // printf("Printing the level Order Traversal: ");
-    // print_level_order(root);
+    printf("Printing the level Order Traversal: ");
+    print_level_order(root);
     printf("Printing the  In-Order   Traversal: ");
     inorder(root);
     printf("\n");
 
     delete (&root, 15);
-    // printf("Printing the level Order Traversal: ");
-    // print_level_order(root);
+    printf("Printing the level Order Traversal: ");
+    print_level_order(root);
     printf("Printing the  In-Order   Traversal: ");
     inorder(root);
     printf("\n");
