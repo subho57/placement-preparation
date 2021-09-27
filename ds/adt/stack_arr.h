@@ -7,7 +7,7 @@
 
 // typedefs
 typedef char * string;
-typedef double type;
+typedef char type;
 
 // setting the top as zero
 int top = 0;
