@@ -29,7 +29,7 @@ void print(int *arr, int n){
 int main(void){
     int t;
     fastscan(&t);
-    while(t--){
+    while(t--) {
         int a, d, k, n, inc;
         fastscan(&a);
         fastscan(&d);

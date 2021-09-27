@@ -374,7 +374,7 @@ int main(void) {
                     break;
             case 9: bubble_sort(&head);
                     break;
-            case 10:reverse_itr(&head);
+            case 10:reverse_itr(&head, &tail);
                     break;
             case 11:deleteAtOddPos(&head, &tail);
                     break;

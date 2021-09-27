@@ -196,27 +196,27 @@ void sum_of_nodes(node **head_ref){
     }
     printf("Sum of all the nodes = %d\n", sum);
 }
-// // todo
-// // to sort the list using bubble sort ~ O(n^2)
-// void bubble_sort(node **head_ref){
-//     if(isEmpty(head_ref)){
-//         printf("ERROR!! List is Empty.");
-//         return;
-//     }
-//     while(!isEmpty(&(*head_ref)->next)){
-//         node *temp=*head_ref;
-//         while(!isEmpty(&temp)){
-//             if((*head_ref)->data > temp->data){
-//                 int swap=temp->data;
-//                 temp->data=(*head_ref)->data;
-//                 (*head_ref)->data=swap;
-//             }
-//             temp=temp->next;
-//         }
-//         head_ref = &(*head_ref)->next;
-//     }
-//     printf("List is now Sorted!!\n");
-// }
+// todo
+// to sort the list using bubble sort ~ O(n^2)
+void bubble_sort(node **head_ref){
+    if(isEmpty(head_ref)){
+        printf("ERROR!! List is Empty.");
+        return;
+    }
+    while(!isEmpty(&(*head_ref)->next)){
+        node *temp=*head_ref;
+        while(!isEmpty(&temp)){
+            if((*head_ref)->data > temp->data){
+                int swap=temp->data;
+                temp->data=(*head_ref)->data;
+                (*head_ref)->data=swap;
+            }
+            temp=temp->next;
+        }
+        head_ref = &(*head_ref)->next;
+    }
+    printf("List is now Sorted!!\n");
+}
 
 // reverse a doubly linked list ~ O(n)
 void reverse_itr(node **head_ref, node **tail_ref){
@@ -265,6 +265,10 @@ int main(void){
     print(&head);
     printf("Printing Backward:");
     reverse_print(&tail);
+
+    bubble_sort(&head);
+    printf("Printing  Forward: ");
+    print(&head);
 
     return 0;
 }

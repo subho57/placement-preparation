@@ -33,7 +33,6 @@ void frequency_sort(int *arr, int n){
 }
 
 int binary_search(int *arr, int n, int key){
-    // frequency_sort(arr, n);
     int lower=0, upper=n-1;
     while(lower<=upper && key >= arr[lower] && key <= arr[upper] ){
         int mid=lower+(upper-lower)/2;
