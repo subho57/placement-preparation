@@ -5,6 +5,20 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "type": "java",
+            "name": "Launch aurren",
+            "request": "launch",
+            "mainClass": "aurren",
+            "projectName": "C programs_bbb58d7c"
+        },
+        {
+            "type": "java",
+            "name": "Launch automorphic",
+            "request": "launch",
+            "mainClass": "automorphic",
+            "projectName": "C programs_bbb58d7c"
+        },
+        {
             "name": "(gdb) Launch",
             "type": "cppdbg",
             "request": "launch",
