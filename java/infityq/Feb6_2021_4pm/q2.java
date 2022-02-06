@@ -1,5 +1,19 @@
 package infityq.Feb6_2021_4pm;
-
+/**
+ * Consider two non-empty positive integer arrays inarr1 & inarr2 as inputs.
+ * Identify & print a 2 x m matrix, outmatrix based on the logic given below:
+ * 
+ * - Search common integers between inarr1 & inarr2.
+ * - Select the smallest integer, m, among the comon integers. If the smallest integer is not a single digit
+ *   number, then consecutively add its digits until m becomes a single digit number.
+ * - Based on the single digit, m, obtained frmo the above, pick those many largest elements each form 
+ *   inarr1 & inarr2.
+ * - From outmatrix, in which the first row will contain m largest elements selected from the inarr1 & 
+ *   the second row will contain m largest elements selected from the inarr2. Each row will contain elements
+ *   in ASCENDING order.
+ * - If no common integer exists or smallest common integer value is zero or largest than any of the input
+ *   array size, then print "-1"
+ */
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Scanner;
@@ -38,12 +52,11 @@ public class q2 {
       }
     }
 
-    Collections.sort(common);
 
-    if (common.size() == 0 || common.get(0) == 0) {
+    if (common.size() == 0 || Collections.min(common) == 0) {
       System.out.println("-1");
     } else {
-      int m = common.get(0);
+      int m = Collections.min(common);
       while(m > 9) {
         int sof = 0;
         while (m > 0) {
