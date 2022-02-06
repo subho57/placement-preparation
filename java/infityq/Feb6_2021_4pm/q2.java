@@ -13,6 +13,21 @@ package infityq.Feb6_2021_4pm;
  *   in ASCENDING order.
  * - If no common integer exists or smallest common integer value is zero or largest than any of the input
  *   array size, then print "-1"
+ * 
+ * Sample Input 1:
+ * 0,17,61,65,90
+ * 5,0,1,4,100
+ * 
+ * Sample Output 1:
+ * -1
+ * 
+ * Sample Input 2:
+ * 101,101,610,447,389
+ * 610,4,101,4,101
+ * 
+ * Sample Output 2:
+ * 447,610
+ * 101,610
  */
 import java.util.ArrayList;
 import java.util.Collections;
