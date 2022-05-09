@@ -19,7 +19,7 @@ public class JDBCTemplate {
     JDBCTemplate() {
         DriverClass.put(Driver.mysql, "com.mysql.cj.jdbc.Driver");
         DriverClass.put(Driver.mariadb, "org.mariadb.jdbc.Driver");
-        DriverClass.put(Driver.oracle, "oracle.jdbc.OracleDriver");
+        DriverClass.put(Driver.oracle, "oracle.jdbc.driver.OracleDriver");
         this.conn = null;
     }
 
@@ -29,7 +29,7 @@ public class JDBCTemplate {
         String connectionUrl = "jdbc:" + driver.toString();
         switch (driver) {
             case oracle:
-                connectionUrl += ":thin:@" + server + ":" + port + "/" + database;
+                connectionUrl += ":thin:@" + server + ":" + port + ":" + database;
                 break;
             default:
                 connectionUrl += "://" + server + ":" + port + "/" + database;
