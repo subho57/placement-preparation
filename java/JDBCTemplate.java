@@ -1,38 +1,58 @@
-import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.HashMap;
 
 public class JDBCTemplate {
-    public static void main(String[] args) throws SQLException, ClassNotFoundException {
-        Class.forName("com.mysql.cj.jdbc.Driver");
-        String url="jdbc:mysql://localhost:3306/test";
 
-        // Database Connectivity established
-        Connection conn = DriverManager.getConnection(url, "root", "");
+    enum Driver {
+        mysql,
+        mariadb,
+        oracle
+    }
+
+    protected Connection conn;
+    protected HashMap<Driver, String> DriverClass = new HashMap<>();
+
+    JDBCTemplate() {
+        DriverClass.put(Driver.mysql, "com.mysql.cj.jdbc.Driver");
+        DriverClass.put(Driver.mariadb, "org.mariadb.jdbc.Driver");
+        DriverClass.put(Driver.oracle, "oracle.jdbc.OracleDriver");
+        this.conn = null;
+    }
+
+    public Connection connect(Driver driver, String server, String database, String username, String password, int port)
+            throws SQLException, ClassNotFoundException {
+        Class.forName(DriverClass.get(driver));
+        String connectionUrl = "jdbc:" + driver.toString();
+        switch (driver) {
+            case oracle:
+                connectionUrl += ":thin:@" + server + ":" + port + "/" + database;
+                break;
+            default:
+                connectionUrl += "://" + server + ":" + port + "/" + database;
+        }
+        this.conn = DriverManager.getConnection(connectionUrl, username, password);
         conn.setAutoCommit(false);
+        return conn;
+    }
 
-        // Statement(Normal)(slower)
-        Statement st = conn.createStatement();
-        // DQL -> Always returns a dataset/resultset -> result might be empty, then empty linked list
-        ResultSet rs = st.executeQuery("select * from customer"); // Runtime
-        while(rs.next()) {
-            System.out.println("Customer Code: " + rs.getString(1));
+    public static void main(String[] args) {
+        JDBCTemplate jdbc = new JDBCTemplate();
+        try {
+            Connection connection = jdbc.connect(Driver.mysql, "localhost", "test", "root", "", 3306);
+            PreparedStatement ps = connection.prepareStatement("SELECT * FROM customer");
+            ResultSet rs = ps.executeQuery();
+            while(rs.next()) {
+                System.out.println(rs.getString("CUST_CODE"));
+            }
+            rs.close();
+            ps.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        // DML or DDL -> boolean
-        System.out.println(st.execute("DELETE FROM customer WHERE CUST_CODE = 'C00020'"));
-        // Faster
-        PreparedStatement ps = conn.prepareStatement("select * from customer"); // Compile Time
-        rs = ps.executeQuery();
-        // conn.commit();
-        while(rs.next()) {
-            System.out.println("Customer Code: " + rs.getString(1));
-        }
-        rs.close();
-        st.close();
-        conn.close();
     }
 }
