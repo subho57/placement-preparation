@@ -14,9 +14,10 @@ public class JDBCTemplate {
     }
 
     protected Connection conn;
-    protected HashMap<Driver, String> DriverClass = new HashMap<>();
+    protected HashMap<Driver, String> DriverClass;
 
     JDBCTemplate() {
+        DriverClass = new HashMap<>();
         DriverClass.put(Driver.mysql, "com.mysql.cj.jdbc.Driver");
         DriverClass.put(Driver.mariadb, "org.mariadb.jdbc.Driver");
         DriverClass.put(Driver.oracle, "oracle.jdbc.driver.OracleDriver");
